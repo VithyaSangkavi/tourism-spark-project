@@ -1,0 +1,741 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sri Lanka Tourism Recommender Dashboard</title>
+  <style>
+    :root {
+      --bg: #f4f6f8;
+      --panel: #ffffff;
+      --ink: #172026;
+      --muted: #61707c;
+      --line: #dce3e8;
+      --teal: #16786f;
+      --blue: #315f8c;
+      --coral: #c45f4d;
+      --gold: #b88922;
+      --green-soft: #e7f4ef;
+      --blue-soft: #e8f0f8;
+      --coral-soft: #f8ebe8;
+      --shadow: 0 10px 28px rgba(26, 39, 52, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.45;
+    }
+
+    .wrap {
+      width: min(1240px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    header {
+      background:
+        linear-gradient(90deg, rgba(12, 32, 38, 0.92), rgba(22, 120, 111, 0.84)),
+        url("https://images.unsplash.com/photo-1588258219511-64eb629cb833?auto=format&fit=crop&w=1800&q=80");
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+      min-height: 360px;
+      display: grid;
+      align-items: center;
+      padding: 58px 0 76px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 0.9fr;
+      gap: 22px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 12px;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.78);
+    }
+
+    h1 {
+      margin: 0;
+      max-width: 760px;
+      font-size: clamp(32px, 5vw, 58px);
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .hero-copy {
+      margin: 14px 0 0;
+      max-width: 720px;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 17px;
+    }
+
+    .hero-panel {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.26);
+      border-radius: 8px;
+      padding: 16px;
+      backdrop-filter: blur(12px);
+    }
+
+    .formula {
+      display: grid;
+      gap: 9px;
+      margin-top: 10px;
+    }
+
+    .formula span {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 14px;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(255, 255, 255, 0.94);
+      border-bottom: 1px solid var(--line);
+      backdrop-filter: blur(12px);
+    }
+
+    nav .wrap {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding: 9px 0;
+    }
+
+    nav a {
+      color: var(--ink);
+      text-decoration: none;
+      padding: 8px 11px;
+      border-radius: 6px;
+      white-space: nowrap;
+      font-size: 14px;
+    }
+
+    nav a:hover { background: #edf2f5; }
+
+    section {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: 0;
+    }
+
+    .hint {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .metric, .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      box-shadow: var(--shadow);
+    }
+
+    .metric {
+      padding: 16px;
+      min-height: 104px;
+    }
+
+    .metric b {
+      display: block;
+      font-size: 28px;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .wide-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 16px;
+    }
+
+    .panel {
+      padding: 16px;
+      overflow: hidden;
+    }
+
+    .panel h3 {
+      margin: 0 0 12px;
+      font-size: 16px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 10px 8px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+
+    th {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 700;
+    }
+
+    tr:last-child td { border-bottom: 0; }
+
+    .rank {
+      width: 30px;
+      height: 30px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 6px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-weight: 700;
+    }
+
+    .score {
+      color: var(--teal);
+      font-weight: 800;
+    }
+
+    .muted { color: var(--muted); }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: #eef3f5;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .pill.hot { background: var(--coral-soft); color: var(--coral); }
+    .pill.good { background: var(--green-soft); color: var(--teal); }
+    .pill.info { background: var(--blue-soft); color: var(--blue); }
+
+    .bars {
+      display: grid;
+      gap: 10px;
+    }
+
+    .bar-row {
+      display: grid;
+      grid-template-columns: minmax(140px, 220px) 1fr 68px;
+      gap: 10px;
+      align-items: center;
+      font-size: 13px;
+    }
+
+    .bar-track {
+      height: 12px;
+      background: #e9eef1;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      display: block;
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--teal), var(--blue));
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    select, button {
+      min-height: 40px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--ink);
+      font: inherit;
+    }
+
+    select {
+      min-width: 220px;
+      padding: 0 12px;
+    }
+
+    button {
+      padding: 0 12px;
+      cursor: pointer;
+    }
+
+    button.active {
+      background: var(--ink);
+      color: #fff;
+      border-color: var(--ink);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .destination-card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      background: #fff;
+    }
+
+    .destination-card h4 {
+      margin: 0 0 8px;
+      font-size: 15px;
+      min-height: 42px;
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .images {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .images img {
+      width: 100%;
+      height: 245px;
+      object-fit: contain;
+      display: block;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      padding: 8px;
+    }
+
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .method-step {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      min-height: 118px;
+    }
+
+    .method-step b {
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .method-step span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    footer {
+      padding: 22px 0 36px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+      header {
+        min-height: 0;
+        padding: 42px 0 48px;
+      }
+
+      .hero-grid,
+      .grid,
+      .wide-grid,
+      .images,
+      .method-grid,
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .metrics {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .section-head {
+        align-items: start;
+        flex-direction: column;
+      }
+
+      .bar-row {
+        grid-template-columns: 120px 1fr 52px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .metrics { grid-template-columns: 1fr; }
+      header { padding: 34px 0 38px; }
+      th, td { padding: 9px 5px; font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Big Data Analytics + Recommendation System</p>
+        <h1>Sri Lanka Tourism Intelligence Dashboard</h1>
+        <p class="hero-copy">A PySpark project that turns 35,509 noisy destination reviews into demand analytics, confidence-weighted destination scores, theme hotspots, and hybrid TF-IDF recommendations.</p>
+      </div>
+      <div class="hero-panel">
+        <p class="eyebrow">Hybrid Ranking Formula</p>
+        <div class="formula">
+          <span><b>Bayesian positive rate</b><em>48%</em></span>
+          <span><b>Popularity confidence</b><em>27%</em></span>
+          <span><b>Review engagement</b><em>15%</em></span>
+          <span><b>Theme diversity</b><em>10%</em></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <div class="wrap">
+      <a href="#summary">Summary</a>
+      <a href="#analytics">Analytics</a>
+      <a href="#districts">District Recommender</a>
+      <a href="#themes">Theme Hotspots</a>
+      <a href="#similarity">Hybrid Similarity</a>
+      <a href="#visuals">Visuals</a>
+      <a href="#method">Method</a>
+    </div>
+  </nav>
+
+  <main>
+    <section id="summary">
+      <div class="wrap">
+        <div class="metrics">
+          <div class="metric"><b>35,509</b><span>clean Spark review records after filtering noisy CSV rows</span></div>
+          <div class="metric"><b>236</b><span>destination profiles available for recommendation coverage</span></div>
+          <div class="metric"><b>7</b><span>travel themes mined from review text using Spark feature rules</span></div>
+          <div class="metric"><b>3</b><span>recommendation views: district, theme, and content similarity</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="analytics">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2>Demand and Quality Analytics</h2>
+            <p class="hint">Popularity is shown beside quality so highly reviewed but weakly rated places are easier to spot.</p>
+          </div>
+        </div>
+        <div class="wide-grid">
+          <div class="panel">
+            <h3>Top Destinations by Review Volume</h3>
+            <div class="bars" id="topBars"></div>
+          </div>
+          <div class="panel">
+            <h3>Quality Ranking Signals</h3>
+            <table>
+              <thead><tr><th>Destination</th><th>District</th><th>Positive</th><th>Score</th></tr></thead>
+              <tbody id="qualityRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="districts">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2>District Recommender</h2>
+            <p class="hint">Select a district to show top destinations and the district-level opportunity signal.</p>
+          </div>
+          <div class="controls">
+            <select id="districtSelect" aria-label="Select district"></select>
+          </div>
+        </div>
+        <div class="grid">
+          <div class="panel">
+            <h3 id="districtTitle">Recommended Destinations</h3>
+            <div class="cards" id="districtCards"></div>
+          </div>
+          <div class="panel">
+            <h3>District Insight</h3>
+            <table>
+              <tbody id="districtInsightRows"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="themes">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2>Theme-Based Hotspots</h2>
+            <p class="hint">Spark tags review text into travel themes and applies confidence-weighted theme scoring.</p>
+          </div>
+          <div class="controls" id="themeButtons"></div>
+        </div>
+        <div class="panel">
+          <table>
+            <thead><tr><th>Rank</th><th>Destination</th><th>District</th><th>Theme Reviews</th><th>Theme Score</th></tr></thead>
+            <tbody id="themeRows"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="similarity">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2>Hybrid Similarity Recommender</h2>
+            <p class="hint">Example output for a traveller who likes Riverston. TF-IDF similarity is blended with sentiment and popularity confidence.</p>
+          </div>
+        </div>
+        <div class="panel">
+          <table>
+            <thead><tr><th>Destination</th><th>District</th><th>Reviews</th><th>Text Similarity</th><th>Hybrid Score</th></tr></thead>
+            <tbody id="similarRows"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="visuals">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2>Generated Spark Outputs</h2>
+            <p class="hint">These charts are produced by running <code>python tourism_project.py</code>.</p>
+          </div>
+        </div>
+        <div class="images">
+          <img src="outputs/top_destinations_latest.png" alt="Top destinations by review volume">
+          <img src="outputs/sentiment_distribution_latest.png" alt="Review sentiment distribution">
+          <img src="outputs/district_strength.png" alt="District recommendation strength">
+        </div>
+      </div>
+    </section>
+
+    <section id="method">
+      <div class="wrap">
+        <div class="section-head">
+          <div>
+            <h2>Pipeline Method</h2>
+            <p class="hint">This is the technical story to explain in the presentation or video.</p>
+          </div>
+        </div>
+        <div class="method-grid">
+          <div class="method-step"><b>1. Spark Ingestion</b><span>Load multiline quoted CSV reviews, infer schema, clean invalid districts, and normalize review text.</span></div>
+          <div class="method-step"><b>2. Feature Engineering</b><span>Create sentiment scores, word engagement, recency segments, and travel theme labels at review level.</span></div>
+          <div class="method-step"><b>3. Analytics Layer</b><span>Aggregate by destination, district, and theme using Spark SQL windows and confidence-weighted scoring.</span></div>
+          <div class="method-step"><b>4. Recommender Layer</b><span>Build TF-IDF destination profiles with Spark ML and rank similar places using a hybrid similarity score.</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">Demo dashboard backed by PySpark analytics and generated data in <code>outputs/dashboard_data.json</code>.</div>
+  </footer>
+
+  <script>
+    const data = {
+      topDestinations: [
+        ["Horton plains national park", "Hatton", 1038, 0.616, 0.724],
+        ["Riverston", "Matale", 911, 0.619, 0.674],
+        ["Moon plains", "Hatton", 764, 0.588, 0.674],
+        ["Bambarakiri ella", "Matale", 757, 0.572, 0.650],
+        ["Kurunagela clock tower", "Kurunagela", 742, 0.218, 0.472],
+        ["Sembuwatta lake", "Matale", 664, 0.636, 0.680],
+        ["Yapahuwa rock fortress", "Kurunagela", 663, 0.454, 0.593],
+        ["Pitawala pathana , riverston", "Matale", 613, 0.581, 0.645],
+        ["Sera ella water falls", "Matale", 529, 0.631, 0.665],
+        ["Sri muththumari amman kovil", "Matale", 528, 0.388, 0.550]
+      ],
+      districtRecommendations: {
+        Badulla: [["Diyaluma Falls",269,0.647,0.681],["Bomburu Ella Waterfall",232,0.677,0.650],["Uva Halpewatte Tea Factory Tour",229,0.594,0.646]],
+        Colombo: [["Beddagana Wetland Park",200,0.775,0.713],["Diyatha Uyana",200,0.680,0.673],["Mount Lavania Beach",200,0.700,0.663]],
+        Galle: [["Japanese Peace Pagoda - Rumassala",259,0.703,0.679],["Jungle Beach, Unawatuna",229,0.642,0.657],["Galle Dutch Fort",200,0.585,0.636]],
+        Gampaha: [["Gampaha Botanical Garden",240,0.596,0.635],["Rukmani Devi Park",197,0.690,0.628],["Guruge Park",220,0.573,0.625]],
+        Hambantota: [["Ridiyagama Safari Park",410,0.566,0.665],["Birds Research Center Hambantota",270,0.607,0.662],["Dry Zone Botanic Gardens, Hambantota",260,0.588,0.649]],
+        Hatton: [["Horton plains national park",1038,0.616,0.724],["Moon plains",764,0.588,0.674],["Kadiyanlena eco resort",410,0.651,0.658]],
+        Kalmunai: [["Maruthamunai beach",104,0.567,0.518],["Sea corner",7,0.429,0.382],["Pandiruppu",6,0.333,0.377]],
+        Kalutara: [["Richmond Castle",250,0.480,0.593],["Kalutara Bodhiya",308,0.435,0.570],["Barberyn Island",46,0.543,0.495]],
+        Kurunagela: [["Lake round kurunagela",284,0.676,0.638],["Athugala viharaya",241,0.577,0.598],["Yapahuwa rock fortress",663,0.454,0.593]],
+        Matale: [["Sembuwatta lake",664,0.636,0.680],["Riverston",911,0.619,0.674],["Sera ella water falls",529,0.631,0.665]],
+        Matara: [["Raja & the Whales",268,0.765,0.728],["Mirissa Beach",239,0.749,0.695],["Coconut Tree Hill",280,0.671,0.684]],
+        Rathnapura: [["Bopath Falls",328,0.610,0.652],["Kirindi Ella Waterfall",142,0.585,0.572],["Katugas Ella Waterfall",111,0.541,0.531]]
+      },
+      districtInsights: {
+        Matale: [5958,24,0.546,248.3,0.477],
+        Colombo: [5745,35,0.513,164.1,0.504],
+        Hatton: [4759,21,0.582,226.6,0.506],
+        Matara: [4423,30,0.558,147.4,0.541],
+        Kurunagela: [2906,24,0.434,121.1,0.495],
+        Badulla: [2884,26,0.545,110.9,0.566],
+        Galle: [2654,18,0.548,147.4,0.536],
+        Hambantota: [2287,22,0.544,104.0,0.572],
+        Rathnapura: [1628,20,0.474,81.4,0.559],
+        Gampaha: [1531,10,0.563,153.1,0.540],
+        Kalutara: [617,4,0.467,154.3,0.486],
+        Kalmunai: [117,3,0.547,39.0,0.663]
+      },
+      themes: {
+        Nature: [["Japanese Peace Pagoda - Rumassala","Galle",118,0.714],["Sembuwatta lake","Matale",216,0.711],["Horton plains national park","Hatton",455,0.709],["Riverston","Matale",273,0.707],["Kadiyanlena eco resort","Hatton",167,0.700]],
+        Beach: [["Mirissa Beach","Matara",185,0.711],["Raja & the Whales","Matara",128,0.703],["Mount Lavania Beach","Colombo",128,0.694],["Hiriketiya Beach","Matara",171,0.688],["Jungle Beach, Unawatuna","Galle",142,0.621]],
+        Relaxation: [["Sembuwatta lake","Matale",134,0.788],["Riverston","Matale",134,0.784],["Bambarakiri ella","Matale",116,0.775],["Sera ella water falls","Matale",104,0.768],["Rangala natural pool","Matale",85,0.761]],
+        Family: [["Mayan Water Park","Gampaha",80,0.626],["Rukmani Devi Park","Gampaha",112,0.621],["Ridiyagama Safari Park","Hambantota",248,0.620],["Birds Research Center Hambantota","Hambantota",90,0.605],["Guruge Park","Gampaha",119,0.599]],
+        Culture: [["Gangarama Temple","Colombo",142,0.571],["Yatagala Raja Maha Viharaya","Galle",88,0.568],["St. Mary's Cathedral","Galle",31,0.538],["Sri muththumari amman kovil","Matale",290,0.536],["St. Lucia's Cathedral","Colombo",64,0.529]],
+        Adventure: [["Horton plains national park","Hatton",30,0.570],["Parrot Rock","Matara",11,0.510],["Riverston","Matale",14,0.500],["Yapahuwa rock fortress","Kurunagela",27,0.498],["Ravana's Cave","Badulla",44,0.495]],
+        General: [["Snake Farm Weligama (Traditional Farm)","Matara",212,0.691],["Raja & the Whales","Matara",121,0.666],["Uva Halpewatte Tea Factory Tour","Badulla",177,0.613],["Riverston","Matale",475,0.602],["Ridiyagama Safari Park","Hambantota",126,0.588]]
+      },
+      similar: [
+        ["Pitawala pathana , riverston","Matale",613,0.589,0.646],
+        ["Horton plains national park","Hatton",1038,0.409,0.558],
+        ["Sembuwatta lake","Matale",664,0.421,0.556],
+        ["Bambarakiri ella","Matale",757,0.429,0.554],
+        ["Hulangala mini world's end view","Matale",231,0.449,0.533],
+        ["Moon plains","Hatton",764,0.362,0.517],
+        ["Rangala natural pool","Matale",283,0.383,0.506]
+      ]
+    };
+
+    const fmt = new Intl.NumberFormat("en-US");
+    const pct = (value) => `${Math.round(value * 100)}%`;
+    const dec = (value) => Number(value).toFixed(3);
+
+    function renderTopBars() {
+      const max = data.topDestinations[0][2];
+      document.getElementById("topBars").innerHTML = data.topDestinations.map(([name, district, reviews]) => {
+        const width = Math.round((reviews / max) * 100);
+        return `<div class="bar-row"><span>${name}</span><div class="bar-track"><span class="bar-fill" style="width:${width}%"></span></div><b>${fmt.format(reviews)}</b></div>`;
+      }).join("");
+    }
+
+    function renderQualityRows() {
+      const rows = [...data.topDestinations].sort((a, b) => b[4] - a[4]).slice(0, 7);
+      document.getElementById("qualityRows").innerHTML = rows.map(([name, district, reviews, positive, score]) =>
+        `<tr><td>${name}</td><td><span class="pill info">${district}</span></td><td>${pct(positive)}</td><td class="score">${dec(score)}</td></tr>`
+      ).join("");
+    }
+
+    function renderDistrictSelect() {
+      const select = document.getElementById("districtSelect");
+      select.innerHTML = Object.keys(data.districtRecommendations).map((district) => `<option value="${district}">${district}</option>`).join("");
+      select.value = "Colombo";
+      select.addEventListener("change", () => renderDistrict(select.value));
+      renderDistrict(select.value);
+    }
+
+    function renderDistrict(district) {
+      document.getElementById("districtTitle").textContent = `Top Picks in ${district}`;
+      document.getElementById("districtCards").innerHTML = data.districtRecommendations[district].map(([name, reviews, positive, score], index) =>
+        `<article class="destination-card"><span class="rank">${index + 1}</span><h4>${name}</h4><div class="split"><span>Reviews<br><b>${fmt.format(reviews)}</b></span><span>Positive<br><b>${pct(positive)}</b></span></div><p><span class="pill good">score ${dec(score)}</span></p></article>`
+      ).join("");
+
+      const [reviews, destinations, positive, reviewsPerDestination, opportunity] = data.districtInsights[district];
+      document.getElementById("districtInsightRows").innerHTML = [
+        ["Total review demand", fmt.format(reviews)],
+        ["Destination coverage", fmt.format(destinations)],
+        ["Positive sentiment rate", pct(positive)],
+        ["Reviews per destination", reviewsPerDestination],
+        ["Opportunity score", `<span class="score">${dec(opportunity)}</span>`]
+      ].map(([label, value]) => `<tr><td class="muted">${label}</td><td>${value}</td></tr>`).join("");
+    }
+
+    function renderThemeButtons() {
+      const container = document.getElementById("themeButtons");
+      container.innerHTML = Object.keys(data.themes).map((theme, index) => `<button type="button" class="${index === 0 ? "active" : ""}" data-theme="${theme}">${theme}</button>`).join("");
+      container.addEventListener("click", (event) => {
+        if (event.target.tagName !== "BUTTON") return;
+        container.querySelectorAll("button").forEach((button) => button.classList.remove("active"));
+        event.target.classList.add("active");
+        renderThemeRows(event.target.dataset.theme);
+      });
+      renderThemeRows("Nature");
+    }
+
+    function renderThemeRows(theme) {
+      document.getElementById("themeRows").innerHTML = data.themes[theme].map(([name, district, reviews, score], index) =>
+        `<tr><td><span class="rank">${index + 1}</span></td><td>${name}</td><td><span class="pill">${district}</span></td><td>${fmt.format(reviews)}</td><td class="score">${dec(score)}</td></tr>`
+      ).join("");
+    }
+
+    function renderSimilarRows() {
+      document.getElementById("similarRows").innerHTML = data.similar.map(([name, district, reviews, similarity, score]) =>
+        `<tr><td>${name}</td><td><span class="pill info">${district}</span></td><td>${fmt.format(reviews)}</td><td>${dec(similarity)}</td><td class="score">${dec(score)}</td></tr>`
+      ).join("");
+    }
+
+    renderTopBars();
+    renderQualityRows();
+    renderDistrictSelect();
+    renderThemeButtons();
+    renderSimilarRows();
+  </script>
+</body>
+</html>
