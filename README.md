@@ -54,17 +54,13 @@ Create or activate a Python environment with the required packages:
 pip install -r requirements.txt
 ```
 
-Run the full project script:
-
-```bash
-python tourism_project.py
-```
-
-Or open and run:
+Open and run the main assignment notebook:
 
 ```text
 tourism_project.ipynb
 ```
+
+The notebook is self-contained and includes the full PySpark implementation.
 
 Generated charts are saved in:
 
@@ -72,7 +68,7 @@ Generated charts are saved in:
 outputs/
 ```
 
-The script also exports:
+The notebook also exports:
 
 ```text
 outputs/dashboard_data.json
@@ -111,11 +107,10 @@ The project prints:
 Recommended files to submit:
 
 - `tourism_project.ipynb`
-- `tourism_project.py`
 - `data/Destination Reviews_(raw).csv` or the dataset source link
 - `README.md`
 - Presentation slides, maximum 10 slides
 - System demonstration video
 
-In the demo video, show the notebook or script running, then explain the main
+In the demo video, show the notebook running, then explain the main
 analytics outputs, recommendation outputs, and generated visualizations.

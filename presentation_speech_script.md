@@ -222,15 +222,10 @@ Thank you.
 
 If I need to show the system demo, I will do it in this order:
 
-1. Open `tourism_project.py` and briefly show the Spark session, data loading,
-   cleaning, feature engineering, analytics, and recommendation functions.
-2. Run the project using:
-
-```powershell
-.\venv\Scripts\python.exe tourism_project.py
-```
-
-3. Show the terminal outputs: dataset summary, top destinations, district
+1. Open `tourism_project.ipynb` and briefly show the setup, Spark session, data
+   loading, cleaning, feature engineering, analytics, and recommendation cells.
+2. Run the notebook cells from top to bottom.
+3. Show the notebook outputs: dataset summary, top destinations, district
    recommendations, theme hotspots, and Riverston recommendations.
 4. Open `demo_ui.html` and show the dashboard sections:
    summary, demand analytics, district recommender, theme hotspots, hybrid
