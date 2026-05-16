@@ -1,4 +1,4 @@
-# Sri Lanka Tourism Big Data Intelligence and Recommendation System
+# Sri Lanka Tourism Big Data Analytics and Recommendation System
 
 This project was built for the Big Data Analytics mini project assignment. It uses
 PySpark to analyze Sri Lankan tourism destination reviews, discover tourism
@@ -101,16 +101,3 @@ The project prints:
 - District-based recommendations
 - Hybrid content-based recommendations similar to a selected destination
 - Recommendation coverage
-
-## Notes for Submission
-
-Recommended files to submit:
-
-- `tourism_project.ipynb`
-- `data/Destination Reviews_(raw).csv` or the dataset source link
-- `README.md`
-- Presentation slides, maximum 10 slides
-- System demonstration video
-
-In the demo video, show the notebook running, then explain the main
-analytics outputs, recommendation outputs, and generated visualizations.
